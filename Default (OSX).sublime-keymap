@@ -1,0 +1,10 @@
+[
+    {
+        "keys": ["super+shift+;"],
+        "command": "ace_jump_word"
+    },
+    {
+        "keys": ["super+shift+'"],
+        "command": "ace_jump_char"
+    }
+]
