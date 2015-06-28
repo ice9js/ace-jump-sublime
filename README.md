@@ -10,6 +10,7 @@ Like it's emacs counterpart, AceJump for sublime features word and character mod
 
 At the moment only the only way to install the plugin is to do so manually.
 To install AceJump, clone this repository into your Packages directory. (Preferences > Browse Packages)
+Make sure the directory is named *AceJump* and not *ace-jump-sublime*!
 
 ## Usage
 
