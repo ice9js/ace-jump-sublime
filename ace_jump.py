@@ -3,21 +3,25 @@ import sublime, sublime_plugin
 WORD_REGEX = r'\b{}'
 CHAR_REGEX = r'{}'
 
-LABELS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+LABELS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 last_index = 0
 hints = []
 search_regex = r''
+
+next_search = False
 
 class AceJumpCommand(sublime_plugin.WindowCommand):
     def run(self):
         self.char = ""
         self.target = ""
         self.views = []
+        self.all_views = []
+        self.changed_views = []
         self.breakpoints = []
 
         for group in range(self.window.num_groups()):
-            self.views.append(self.window.active_view_in_group(group))
+            self.all_views.append(self.window.active_view_in_group(group))
 
         self.window.show_input_panel(
             self.get_prompt(),
@@ -29,23 +33,22 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
 
     def submit(self, command):
         self.jump()
+        self.window.show_input_panel(
+            self.get_prompt(),
+            self.char,
+            self.submit,
+            self.parse,
+            self.jump
+        )
 
     def parse(self, command):
-        global last_index, hints, search_regex
+        global search_regex
 
         search_regex = self.get_regex()
 
         if len(command) == 1:
             self.char = command
-            self.breakpoints = []
-
-            last_index = 0
-            hints = []
-
-            for view in self.views:
-                view.run_command("add_ace_jump_labels", {"char": self.char})
-                self.breakpoints.append(last_index)
-
+            self.search_views()
             return
 
         if len(command) == 2:
@@ -53,12 +56,35 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
 
         self.window.run_command("hide_panel", {"cancel": True})
 
+    def search_views(self):
+        global last_index, hints
+
+        self.breakpoints = []
+
+        last_index = 0
+        hints = []
+
+        self.views = self.all_views[:] if len(self.views) == 0 else self.views
+        self.changed_views = []
+
+        for view in self.views:
+            view.run_command("add_ace_jump_labels", {"char": self.char})
+            self.breakpoints.append(last_index)
+            self.changed_views.append(view)
+
+            if next_search:
+                break
+
+            self.views.remove(view)
+
     def jump(self):
+        global next_search
+
         last_breakpoint = 0
 
         for breakpoint in self.breakpoints:
             if breakpoint != last_breakpoint:
-                view = self.views[self.view_for_index(breakpoint - 1)]
+                view = self.changed_views[self.view_for_index(breakpoint - 1)]
                 view.run_command("remove_ace_jump_labels")
                 last_breakpoint = breakpoint
 
@@ -68,10 +94,12 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
             return
 
         target_region = hints[target_index].begin()
-        target_view = self.views[self.view_for_index(target_index)]
+        target_view = self.changed_views[self.view_for_index(target_index)]
 
         self.window.focus_view(target_view)
         target_view.run_command("perform_ace_jump", {"target": target_region})
+
+        next_search = False
 
     def view_for_index(self, index):
         for breakpoint in self.breakpoints:
@@ -94,10 +122,10 @@ class AceJumpCharCommand(AceJumpCommand):
 
 class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
     def run(self, edit, char):
-        global last_index
+        global next_search, last_index
 
         visible_region = self.view.visible_region()
-        next_search = visible_region.begin()
+        next_search = next_search if next_search else visible_region.begin()
         last_search = visible_region.end()
 
         while (next_search < last_search and last_index < len(LABELS)):
@@ -115,6 +143,9 @@ class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
             self.view.replace(edit, hint, label)
 
             next_search = word.end()
+
+        if last_index < len(LABELS):
+            next_search = False
 
         self.view.add_regions("ace_jump_hints", hints, "invalid")
 
