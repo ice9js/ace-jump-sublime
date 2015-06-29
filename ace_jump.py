@@ -16,9 +16,13 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         self.all_views = []
         self.changed_views = []
         self.breakpoints = []
+        self.syntax = []
 
         for group in range(self.window.num_groups()):
             self.all_views.append(self.window.active_view_in_group(group))
+
+        for view in self.all_views:
+            self.syntax.append(view.settings().get('syntax'))
 
         self.window.show_input_panel(
             self.prompt(),
@@ -64,6 +68,9 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         self.views = self.all_views[:] if len(self.views) == 0 else self.views
         self.changed_views = []
 
+        for view in self.all_views:
+            view.set_syntax_file('Packages/AceJump/AceJump.tmLanguage')
+
         for view in self.views[:]:
             view.run_command("add_ace_jump_labels", {"char": self.char})
             self.breakpoints.append(last_index)
@@ -84,6 +91,9 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
                 view = self.changed_views[self.view_for_index(breakpoint - 1)]
                 view.run_command("remove_ace_jump_labels")
                 last_breakpoint = breakpoint
+
+        for i in range(len(self.all_views)):
+            self.all_views[i].set_syntax_file(self.syntax[i])
 
         target_index = LABELS.find(self.target)
 
