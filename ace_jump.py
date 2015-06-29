@@ -1,4 +1,5 @@
 import sublime, sublime_plugin
+import re
 
 LABELS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -157,7 +158,10 @@ class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
         last_search = visible_region.end()
 
         while (next_search < last_search and last_index < len(LABELS)):
-            word = self.view.find(search_regex.format(char), next_search)
+            word = self.view.find(
+                search_regex.format(re.escape(char)),
+                next_search
+            )
 
             if not word:
                 break
