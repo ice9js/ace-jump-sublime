@@ -17,6 +17,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         self.changed_views = []
         self.breakpoints = []
         self.syntax = []
+        self.cancel = True
 
         for group in range(self.window.num_groups()):
             self.all_views.append(self.window.active_view_in_group(group))
@@ -33,6 +34,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         )
 
     def submit(self, command):
+        self.cancel = False
         self.jump()
         self.window.show_input_panel(
             self.prompt(),
@@ -84,7 +86,9 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
     def jump(self):
         global next_search
 
-        next_search = False
+        next_search = False if self.cancel else next_search
+        self.cancel = True
+
         last_breakpoint = 0
 
         for breakpoint in self.breakpoints:
