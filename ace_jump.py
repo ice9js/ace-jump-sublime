@@ -84,6 +84,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
     def jump(self):
         global next_search
 
+        next_search = False
         last_breakpoint = 0
 
         for breakpoint in self.breakpoints:
@@ -105,8 +106,6 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
 
         self.window.focus_view(target_view)
         target_view.run_command("perform_ace_jump", {"target": target_region})
-
-        next_search = False
 
     def view_for_index(self, index):
         for breakpoint in self.breakpoints:
