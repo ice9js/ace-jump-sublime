@@ -6,5 +6,9 @@
     {
         "keys": ["super+shift+'"],
         "command": "ace_jump_char"
+    },
+    {
+        "keys": ["super+shift+l"],
+        "command": "ace_jump_line"
     }
 ]
