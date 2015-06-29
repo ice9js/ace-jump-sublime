@@ -137,6 +137,8 @@ class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
     def run(self, edit, char):
         global next_search, last_index
 
+        view_hints = []
+
         visible_region = self.view.visible_region()
         next_search = next_search if next_search else visible_region.begin()
         last_search = visible_region.end()
@@ -151,7 +153,7 @@ class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
             last_index += 1
 
             hint = sublime.Region(word.begin(), word.begin() + 1)
-            hints.append(hint)
+            view_hints.append(hint)
 
             self.view.replace(edit, hint, label)
 
@@ -160,7 +162,10 @@ class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
         if last_index < len(LABELS):
             next_search = False
 
-        self.view.add_regions("ace_jump_hints", hints, "invalid")
+        self.view.add_regions("ace_jump_hints", view_hints, "invalid")
+
+        for hint in view_hints:
+            hints.append(hint)
 
 class RemoveAceJumpLabelsCommand(sublime_plugin.TextCommand):
     def run(self, edit):
