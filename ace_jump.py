@@ -1,8 +1,5 @@
 import sublime, sublime_plugin
 
-WORD_REGEX = r'\b{}'
-CHAR_REGEX = r'{}'
-
 LABELS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 last_index = 0
@@ -24,8 +21,8 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
             self.all_views.append(self.window.active_view_in_group(group))
 
         self.window.show_input_panel(
-            self.get_prompt(),
-            "",
+            self.prompt(),
+            self.init_value(),
             self.submit,
             self.parse,
             self.jump
@@ -34,7 +31,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
     def submit(self, command):
         self.jump()
         self.window.show_input_panel(
-            self.get_prompt(),
+            self.prompt(),
             self.char,
             self.submit,
             self.parse,
@@ -44,7 +41,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
     def parse(self, command):
         global search_regex
 
-        search_regex = self.get_regex()
+        search_regex = self.label_regex()
 
         if len(command) == 1:
             self.char = command
@@ -67,7 +64,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         self.views = self.all_views[:] if len(self.views) == 0 else self.views
         self.changed_views = []
 
-        for view in self.views:
+        for view in self.views[:]:
             view.run_command("add_ace_jump_labels", {"char": self.char})
             self.breakpoints.append(last_index)
             self.changed_views.append(view)
@@ -107,18 +104,34 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
                 return self.breakpoints.index(breakpoint)
 
 class AceJumpWordCommand(AceJumpCommand):
-    def get_prompt(self):
+    def prompt(self):
         return "Head char"
 
-    def get_regex(self):
-        return WORD_REGEX
+    def init_value(self):
+        return ""
+
+    def label_regex(self):
+        return r'\b{}'
 
 class AceJumpCharCommand(AceJumpCommand):
-    def get_prompt(self):
+    def prompt(self):
         return "Char"
 
-    def get_regex(self):
-        return CHAR_REGEX
+    def init_value(self):
+        return ""
+
+    def label_regex(self):
+        return r'{}'
+
+class AceJumpLineCommand(AceJumpCommand):
+    def prompt(self):
+        return ""
+
+    def init_value(self):
+        return " "
+
+    def label_regex(self):
+        return r'(.*)[^\s](.*)\n'
 
 class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
     def run(self, edit, char):
