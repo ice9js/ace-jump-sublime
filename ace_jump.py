@@ -79,7 +79,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         next_search = False
 
         self.remove_labels()
-        restore_views_syntax(self.all_views, self.syntax)
+        set_views_syntax(self.all_views, self.syntax)
         self.jump(LABELS.find(self.target))
 
     def add_labels(self, regex):
