@@ -1,5 +1,5 @@
 import sublime, sublime_plugin
-import re
+import re, itertools
 
 LABELS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
