@@ -9,6 +9,8 @@ search_regex = r''
 
 next_search = False
 
+mode = 0
+
 def get_active_views(window):
     """Returns all currently visible views"""
 
@@ -31,6 +33,28 @@ def get_views_syntax(views):
         syntax.append(view.settings().get('syntax'))
     return syntax
 
+def set_views_sel(views, selections):
+    """Sets the selections for all given views"""
+
+    for i in range(len(views)):
+        for sel in selections[i]:
+            views[i].sel().add(sel)
+
+def get_views_sel(views):
+    """Returns the current selection for each from the given views"""
+
+    selections = []
+    for view in views:
+        view_selections = []
+        selections.append(view.sel())
+    return selections
+
+def clear_views_sel(views):
+    """Clears the selection in all given views"""
+
+    for view in views:
+        view.sel().clear()
+
 class AceJumpCommand(sublime_plugin.WindowCommand):
     """Base command class for AceJump plugin"""
 
@@ -43,11 +67,13 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
 
         self.all_views = get_active_views(self.window)
         self.syntax = get_views_syntax(self.all_views)
+        self.sel = get_views_sel(self.all_views)
 
         self.show_prompt(self.prompt(), self.init_value())
 
     def show_prompt(self, title, value):
         """Shows a prompt with the given title and value in the window"""
+
         self.window.show_input_panel(
             title, value,
             self.next_batch, self.on_input, self.submit
@@ -75,12 +101,15 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
     def submit(self):
         """Handles the behavior after closing the prompt"""
 
-        global next_search
+        global next_search, mode
         next_search = False
 
         self.remove_labels()
+        set_views_sel(self.all_views, self.sel)
         set_views_syntax(self.all_views, self.syntax)
         self.jump(LABELS.find(self.target))
+
+        mode = 0
 
     def add_labels(self, regex):
         """Adds labels to characters matching the regex"""
@@ -92,7 +121,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         last_index = 0
         hints = []
 
-        self.views = self.all_views[:] if len(self.views) == 0 else self.views
+        self.views = self.views_to_label()
         self.changed_views = []
 
         for view in self.views[:]:
@@ -105,6 +134,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
 
             self.views.remove(view)
 
+        clear_views_sel(self.all_views)
         set_views_syntax(self.all_views, list(itertools.repeat(
             "Packages/AceJump/AceJump.tmLanguage",
             len(self.all_views)
@@ -132,8 +162,17 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         self.window.focus_view(view)
         view.run_command("perform_ace_jump", {"target": region})
 
+    def views_to_label(self):
+        """Returns the views that still have to be labeled"""
+
+        if mode != 0:
+            return [self.window.active_view()]
+
+        return self.all_views[:] if len(self.views) == 0 else self.views
+
     def view_for_index(self, index):
         """Returns a view index for the given label index"""
+
         for breakpoint in self.breakpoints:
             if index < breakpoint:
                 return self.breakpoints.index(breakpoint)
@@ -173,6 +212,22 @@ class AceJumpLineCommand(AceJumpCommand):
 
     def regex(self):
         return r'(.*)[^\s](.*)\n'
+
+class AceJumpSelectCommand(sublime_plugin.WindowCommand):
+    """Command for turning on select mode"""
+
+    def run(self):
+        global mode
+
+        mode = 0 if mode == 1 else 1
+
+class AceJumpAddCursorCommand(sublime_plugin.WindowCommand):
+    """Command for turning on multiple cursor mode"""
+
+    def run(self):
+        global mode
+
+        mode = 0 if mode == 2 else 2
 
 class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
     """Command for adding labels to the views"""
@@ -231,7 +286,17 @@ class RemoveAceJumpLabelsCommand(sublime_plugin.TextCommand):
 
 class PerformAceJumpCommand(sublime_plugin.TextCommand):
     """Command performing the jump"""
+
     def run(self, edit, target):
-        self.view.sel().clear()
-        self.view.sel().add(sublime.Region(target))
+        if mode == 0:
+            self.view.sel().clear()
+
+        self.view.sel().add(self.target_region(target))
         self.view.show(target)
+
+    def target_region(self, target):
+        if mode == 1:
+            for cursor in self.view.sel():
+                return sublime.Region(cursor.begin(), target)
+
+        return sublime.Region(target)
