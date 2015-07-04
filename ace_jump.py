@@ -45,7 +45,6 @@ def get_views_sel(views):
 
     selections = []
     for view in views:
-        view_selections = []
         selections.append(view.sel())
     return selections
 
