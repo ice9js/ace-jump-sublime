@@ -12,11 +12,11 @@
         "command": "ace_jump_line"
     },
     {
-        "keys": ["super+shift+,"],
+        "keys": ["ctrl+;"],
         "command": "ace_jump_select"
     },
     {
-        "keys": ["super+shift+."],
+        "keys": ["ctrl+'"],
         "command": "ace_jump_add_cursor"
     }
 ]
