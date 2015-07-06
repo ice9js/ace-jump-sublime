@@ -10,5 +10,13 @@
     {
         "keys": ["super+shift+l"],
         "command": "ace_jump_line"
+    },
+    {
+        "keys": ["ctrl+;"],
+        "command": "ace_jump_select"
+    },
+    {
+        "keys": ["ctrl+'"],
+        "command": "ace_jump_add_cursor"
     }
 ]
