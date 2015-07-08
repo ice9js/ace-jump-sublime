@@ -4,7 +4,11 @@ A plugin for Sublime Text 3 heavily inspired by AceJump for emacs.
 
 AceJump allows you to move the cursor to any character to any place currently on screen.
 To clarify, you can jump between characters in all visible portions of currently open documents in any panes.
-Like it's emacs counterpart, AceJump for sublime features word, character and line modes which make jumping even easier.
+Like it's emacs counterpart, AceJump for sublime features word (on the image below), character and line modes which make jumping even easier.
+
+![AceJump Word Mode Labels](http://crystalplanet-studio.com/img/acejump/ace_jump.jpg)
+
+After selecting a mode, you type in a character (except in line mode, where you don't have to type in anything) and appropriate labels are displayed. Then all you need to do is press the key from the label and voila!
 
 ## Installation
 
