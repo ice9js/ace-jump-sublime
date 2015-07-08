@@ -39,6 +39,21 @@ Labels all non-empty lines and lets you jump to one of them.
 - ```Ctrl/Super + Shift + l```
 - ```<label>```
 
+### Select mode
+
+After triggering select mode, the next jump will select everything inbetween the current cursor position and the selected label.
+When select mode is triggered, the next jump is limited to the current file.
+
+- ```Alt+;``` (```Ctrl+;``` for OS X)
+- perform a jump using word, character or line mode
+
+### Multiple cursor mode
+
+After triggering multiple cursor mode, the next jump will add a new cursor to the view instead of moving the existing one.
+Again, when this mode is triggered, only jumps in the same file are available.
+
+- ```Alt+'``` (```Ctrl+'``` for OS X)
+
 ### Batching
 
 In case there are more places to jump to than labels available, labels will be batched and you can cycle through them by simply pressing enter.
@@ -52,9 +67,5 @@ If you wish to create your own bindings, you should bind them to these commands:
 - ace_jump_word
 - ace_jump_char
 - ace_jump_line
-
-## Contributing
-
-Feel free to create an issue to report a bug or if you have a feature proposal and I'll see what I can do about it. You're also welcome to send in any pull requests.
-
-## Notes
+- ace_jump_select
+- ace_jump_add_cursor
