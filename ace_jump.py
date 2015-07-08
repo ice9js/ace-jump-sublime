@@ -115,18 +115,22 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
 
         global last_index, hints
 
-        self.breakpoints = []
-
         last_index = 0
         hints = []
 
         self.views = self.views_to_label()
         self.changed_views = []
+        self.breakpoints = []
+        changed_files = []
 
         for view in self.views[:]:
+            if view.file_name() in changed_files:
+                break
+
             view.run_command("add_ace_jump_labels", {"regex": regex})
             self.breakpoints.append(last_index)
             self.changed_views.append(view)
+            changed_files.append(view.file_name())
 
             if next_search:
                 break
