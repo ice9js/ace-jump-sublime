@@ -125,7 +125,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
 
         for view in self.views[:]:
             if view.file_name() in changed_files:
-                continue
+                break
 
             view.run_command("add_ace_jump_labels", {"regex": regex})
             self.breakpoints.append(last_index)
