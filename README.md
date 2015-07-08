@@ -6,15 +6,19 @@ AceJump allows you to move the cursor to any character to any place currently on
 To clarify, you can jump between characters in all visible portions of currently open documents in any panes.
 Like it's emacs counterpart, AceJump for sublime features word (on the image below), character and line modes which make jumping even easier.
 
-![AceJump Word Mode Labels](http://crystalplanet-studio.com/img/acejump/ace_jump.jpg)
+![AceJump Word Mode Labels](http://crystalplanet-studio.com/img/acejump/acejump.jpg)
 
 After selecting a mode, you type in a character (except in line mode, where you don't have to type in anything) and appropriate labels are displayed. Then all you need to do is press the key from the label and voila!
 
 ## Installation
 
-At the moment only the only way to install the plugin is to do so manually.
-To install AceJump, clone this repository into your Packages directory. (Preferences > Browse Packages)
-Make sure the directory is named *AceJump* and not *ace-jump-sublime*!
+You can install AceJump for sublime using git by running the following command within sublime packages directory (Preferences > Browse Packages):
+
+```
+$ git clone git@github.com:ice9js/ace-jump-sublime.git AceJump/
+```
+
+Or you can just copy the contents of this repository into ```Packages/AceJump```. 
 
 ## Usage
 
