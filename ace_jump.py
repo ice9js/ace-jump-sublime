@@ -1,8 +1,6 @@
 import sublime, sublime_plugin
 import re, itertools
 
-LABELS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
 last_index = 0
 hints = []
 search_regex = r''
@@ -68,6 +66,13 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         self.syntax = get_views_syntax(self.all_views)
         self.sel = get_views_sel(self.all_views)
 
+        settings = sublime.load_settings("AceJump.sublime-settings")
+        self.highlight = settings.get("labels_scope", "invalid")
+        self.labels = settings.get(
+            "labels",
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        )
+
         self.show_prompt(self.prompt(), self.init_value())
 
     def show_prompt(self, title, value):
@@ -106,7 +111,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         self.remove_labels()
         set_views_sel(self.all_views, self.sel)
         set_views_syntax(self.all_views, self.syntax)
-        self.jump(LABELS.find(self.target))
+        self.jump(self.labels.find(self.target))
 
         mode = 0
 
@@ -127,7 +132,11 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
             if view.file_name() in changed_files:
                 break
 
-            view.run_command("add_ace_jump_labels", {"regex": regex})
+            view.run_command("add_ace_jump_labels", {
+                "regex": regex,
+                "labels": self.labels,
+                "highlight": self.highlight
+            })
             self.breakpoints.append(last_index)
             self.changed_views.append(view)
             changed_files.append(view.file_name())
@@ -235,17 +244,16 @@ class AceJumpAddCursorCommand(sublime_plugin.WindowCommand):
 class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
     """Command for adding labels to the views"""
 
-    def run(self, edit, regex):
+    def run(self, edit, regex, labels, highlight):
         global hints
 
-        characters = self.find(regex)
-
-        self.add_labels(edit, characters)
-        self.view.add_regions("ace_jump_hints", characters, "invalid")
+        characters = self.find(regex, len(labels))
+        self.add_labels(edit, characters, labels)
+        self.view.add_regions("ace_jump_hints", characters, highlight)
 
         hints = hints + characters
 
-    def find(self, regex):
+    def find(self, regex, max_labels):
         """Returns a list with all occurences matching the regex"""
 
         global next_search, last_index
@@ -256,7 +264,7 @@ class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
         next_search = next_search if next_search else visible_region.begin()
         last_search = visible_region.end()
 
-        while (next_search < last_search and last_index < len(LABELS)):
+        while (next_search < last_search and last_index < max_labels):
             word = self.view.find(regex, next_search)
 
             if not word:
@@ -266,17 +274,17 @@ class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
             next_search = word.end()
             chars.append(sublime.Region(word.begin(), word.begin() + 1))
 
-        if last_index < len(LABELS):
+        if last_index < max_labels:
             next_search = False
 
         return chars
 
-    def add_labels(self, edit, regions):
+    def add_labels(self, edit, regions, labels):
         """Replaces the given regions with labels"""
 
         for i in range(len(regions)):
             self.view.replace(
-                edit, regions[i], LABELS[last_index + i - len(regions)]
+                edit, regions[i], labels[last_index + i - len(regions)]
             )
 
 class RemoveAceJumpLabelsCommand(sublime_plugin.TextCommand):

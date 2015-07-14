@@ -12,7 +12,16 @@ After selecting a mode, you type in a character (except in line mode, where you 
 
 ## Installation
 
-You can install AceJump for sublime using git by running the following command within sublime packages directory (Preferences > Browse Packages):
+### PackageControl
+
+You can install AceJump from [PackageControl](http://wbond.net/sublime_packages/package_control) by following the steps below:
+
+- Open up the command palette and select ```Package Control: Install Package```
+- Wait for the packages index to load and select ```AceJump```
+
+### Manual installation
+
+You can install AceJump manually using git by running the following command within sublime packages directory (Preferences > Browse Packages):
 
 ```
 $ git clone git@github.com:ice9js/ace-jump-sublime.git AceJump/
@@ -44,7 +53,7 @@ Goes to an occurence of the given character.
 
 Labels all non-empty lines and lets you jump to one of them.
 
-- ```Ctrl/Super + Shift + l```
+- ```Ctrl/Super + Shift + .```
 - ```<label>```
 
 ### Select mode
@@ -68,12 +77,22 @@ In case there are more places to jump to than labels available, labels will be b
 
 ## Customization
 
-### Custom key bindings
+### Key bindings
 
-If you wish to create your own bindings, you should bind them to these commands:
+Go to ```Preferences > Package Settings > AceJump > Key Bindings - User```.
+You can then override the bindings for any of the following commands:
 
-- ace_jump_word
-- ace_jump_char
-- ace_jump_line
-- ace_jump_select
-- ace_jump_add_cursor
+- ```ace_jump_word```
+- ```ace_jump_char```
+- ```ace_jump_line```
+- ```ace_jump_select```
+- ```ace_jump_add_cursor```
+
+### Labels
+
+Go to ```Preferences > Package Settings > AceJump > Settings - User```,
+and override the key ```labels```.
+
+### Hinglighting
+
+You can also set the syntsx scope that's used for highlighting by going to ```Preferences > Package Settings > AceJump > Settings - User```, and overriding ```labels_scope```.
