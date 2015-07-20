@@ -3,6 +3,8 @@
 <dict>
     <key>name</key>
     <string>AceJump</string>
+    <key>hidden</key>
+    <string>true</string>
     <key>patterns</key>
     <array>
         <dict>
