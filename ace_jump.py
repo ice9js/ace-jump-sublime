@@ -17,19 +17,39 @@ def get_active_views(window):
         views.append(window.active_view_in_group(group))
     return views
 
+def set_views_setting(views, setting, values):
+    """Sets the values for the setting in all given views"""
+
+    for i in range(len(views)):
+        views[i].settings().set(setting, values[i])
+
+def set_views_settings(views, settings, values):
+    """Sets the values for all settings in all given views"""
+
+    for i in range(len(settings)):
+        set_views_setting(views, settings[i], values[i])
+
+def get_views_setting(views, setting):
+    """Returns the setting value for all given views"""
+
+    settings = []
+    for view in views:
+        settings.append(view.settings().get(setting))
+    return settings
+
+def get_views_settings(views, settings):
+    """Gets the settings for every given view"""
+
+    values = []
+    for setting in settings:
+        values.append(get_views_setting(views, setting))
+    return values
+
 def set_views_syntax(views, syntax):
     """Sets the syntax highlighting for all given views"""
 
     for i in range(len(views)):
         views[i].set_syntax_file(syntax[i])
-
-def get_views_syntax(views):
-    """Returns a list with syntax for each from the given views"""
-
-    syntax = []
-    for view in views:
-        syntax.append(view.settings().get('syntax'))
-    return syntax
 
 def set_views_sel(views, selections):
     """Sets the selections for all given views"""
@@ -63,7 +83,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         self.breakpoints = []
 
         self.all_views = get_active_views(self.window)
-        self.syntax = get_views_syntax(self.all_views)
+        self.syntax = get_views_setting(self.all_views, "syntax")
         self.sel = get_views_sel(self.all_views)
 
         settings = sublime.load_settings("AceJump.sublime-settings")
@@ -71,6 +91,12 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         self.labels = settings.get(
             "labels",
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        )
+
+        self.view_settings = settings.get("view_settings", [])
+        self.view_values = get_views_settings(
+            self.all_views,
+            self.view_settings
         )
 
         self.show_prompt(self.prompt(), self.init_value())
@@ -147,10 +173,17 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
             self.views.remove(view)
 
         clear_views_sel(self.all_views)
+
         set_views_syntax(self.all_views, list(itertools.repeat(
             "Packages/AceJump/AceJump.tmLanguage",
             len(self.all_views)
         )))
+
+        set_views_settings(
+            self.all_views,
+            self.view_settings,
+            self.view_values
+        )
 
     def remove_labels(self):
         """Removes all previously added labels"""
