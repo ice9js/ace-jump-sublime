@@ -3,5 +3,40 @@
     "labels": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
 
     // Syntax highlighting scope for the labels
-    "labels_scope": "invalid"
+    "labels_scope": "invalid",
+
+    // View settings that should be respected when switching the syntax
+    // highlighting mode. In case s plugin you use adds a new
+    // setting to a view, you probably want to add it to this list.
+    "view_settings": [
+        "auto_indent",
+        "tab_size",
+        "translate_tabs_to_spaces",
+        "use_tab_stops",
+        "trim_automatic_white_space",
+        "detect_indentation",
+        "draw_white_space",
+        "trim_trailing_white_space_on_save",
+        "always_show_minimap_viewport",
+        "color_scheme",
+        "font_face",
+        "font_options",
+        "gutter",
+        "rulers",
+        "draw_minimap_border",
+        "highlight_line",
+        "line_padding_top",
+        "line_padding_bottom",
+        "scroll_past_end",
+        "line_numbers",
+        "word_wrap",
+        "wrap_width",
+        "indent_subsequent_lines",
+        "draw_centered",
+        "match_brackets",
+        "match_brackets_content",
+        "match_brackets_square",
+        "match_brackets_braces",
+        "match_brackets_angle",
+    ]
 }
