@@ -18,5 +18,9 @@
     {
         "keys": ["ctrl+'"],
         "command": "ace_jump_add_cursor"
+    },
+    {
+        "keys": ["ctrl+."],
+        "command": "ace_jump_after"
     }
 ]

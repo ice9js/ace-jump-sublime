@@ -71,6 +71,13 @@ Again, when this mode is triggered, only jumps in the same file are available.
 
 - ```Alt+'``` (```Ctrl+'``` for OS X)
 
+### Jump-after mode
+
+In this mode, the cursor will jump behind the targeted instance. Unfortunetely,
+this mode cannot be paired with select or multiple cursor mode yet.
+
+- ```Alt+.``` (```Ctrl+.``` for OS X)
+
 ### Batching
 
 In case there are more places to jump to than labels available, labels will be batched and you can cycle through them by simply pressing enter.

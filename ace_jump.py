@@ -206,6 +206,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
 
         self.window.focus_view(view)
         view.run_command("perform_ace_jump", {"target": region})
+        self.after_jump(view)
 
     def views_to_label(self):
         """Returns the views that still have to be labeled"""
@@ -234,6 +235,13 @@ class AceJumpWordCommand(AceJumpCommand):
     def regex(self):
         return r'\b{}'
 
+    def after_jump(self, view):
+        global mode
+
+        if mode == 3:
+            view.run_command("move", {"by": "word_ends", "forward": True})
+            mode = 0
+
 class AceJumpCharCommand(AceJumpCommand):
     """Specialized command for char-mode"""
 
@@ -246,6 +254,13 @@ class AceJumpCharCommand(AceJumpCommand):
     def regex(self):
         return r'{}'
 
+    def after_jump(self, view):
+        global mode
+
+        if mode == 3:
+            view.run_command("move", {"by": "characters", "forward": True})
+            mode = 0
+
 class AceJumpLineCommand(AceJumpCommand):
     """Specialized command for line-mode"""
 
@@ -257,6 +272,14 @@ class AceJumpLineCommand(AceJumpCommand):
 
     def regex(self):
         return r'(.*)[^\s](.*)\n'
+
+    def after_jump(self, view):
+        global mode
+
+        if mode == 3:
+            view.run_command("move", {"by": "lines", "forward": True})
+            view.run_command("move", {"by": "characters", "forward": False})
+            mode = 0
 
 class AceJumpSelectCommand(sublime_plugin.WindowCommand):
     """Command for turning on select mode"""
@@ -273,6 +296,15 @@ class AceJumpAddCursorCommand(sublime_plugin.WindowCommand):
         global mode
 
         mode = 0 if mode == 2 else 2
+
+class AceJumpAfterCommand(sublime_plugin.WindowCommand):
+    """Modifier-command which lets you jump behind a character, word or line"""
+
+    def run(self):
+        global mode
+
+        mode = 0 if mode == 3 else 3
+        print(mode)
 
 class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
     """Command for adding labels to the views"""
@@ -332,7 +364,7 @@ class PerformAceJumpCommand(sublime_plugin.TextCommand):
     """Command performing the jump"""
 
     def run(self, edit, target):
-        if mode == 0:
+        if mode == 0 or mode == 3:
             self.view.sel().clear()
 
         self.view.sel().add(self.target_region(target))
