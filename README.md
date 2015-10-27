@@ -27,7 +27,7 @@ You can install AceJump manually using git by running the following command with
 $ git clone git@github.com:ice9js/ace-jump-sublime.git AceJump/
 ```
 
-Or you can just copy the contents of this repository into ```Packages/AceJump```. 
+Or you can just copy the contents of this repository into ```Packages/AceJump```.
 
 ## Usage
 
@@ -100,6 +100,6 @@ You can then override the bindings for any of the following commands:
 Go to ```Preferences > Package Settings > AceJump > Settings - User```,
 and override the key ```labels```.
 
-### Hinglighting
+### Higlighting
 
 You can also set the syntsx scope that's used for highlighting by going to ```Preferences > Package Settings > AceJump > Settings - User```, and overriding ```labels_scope```.
