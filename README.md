@@ -100,6 +100,6 @@ You can then override the bindings for any of the following commands:
 Go to ```Preferences > Package Settings > AceJump > Settings - User```,
 and override the key ```labels```.
 
-### Higlighting
+### Highlighting
 
 You can also set the syntsx scope that's used for highlighting by going to ```Preferences > Package Settings > AceJump > Settings - User```, and overriding ```labels_scope```.
