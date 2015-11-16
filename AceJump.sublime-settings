@@ -6,7 +6,7 @@
     "labels_scope": "invalid",
 
     // View settings that should be respected when switching the syntax
-    // highlighting mode. In case s plugin you use adds a new
+    // highlighting mode. In case a plugin you use adds a new
     // setting to a view, you probably want to add it to this list.
     "view_settings": [
         "auto_indent",
