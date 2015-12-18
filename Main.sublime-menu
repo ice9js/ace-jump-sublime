@@ -39,7 +39,7 @@
                                 "caption": "Key Bindings - Default",
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/AceJump/Default (OSX).sublime.keymap",
+                                    "file": "${packages}/AceJump/Default (OSX).sublime-keymap",
                                     "platform": "OSX"
                                 }
                             },
@@ -47,7 +47,7 @@
                                 "caption": "Key Bindings - Default",
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/AceJump/Default (Linux).sublime.keymap",
+                                    "file": "${packages}/AceJump/Default (Linux).sublime-keymap",
                                     "platform": "Linux"
                                 }
                             },
@@ -55,7 +55,7 @@
                                 "caption": "Key Bindings - Default",
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/AceJump/Default (Windows).sublime.keymap",
+                                    "file": "${packages}/AceJump/Default (Windows).sublime-keymap",
                                     "platform": "Windows"
                                 }
                             },
@@ -63,7 +63,7 @@
                                 "caption": "Key Bindings - User",
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/User/Default (OSX).sublime.keymap",
+                                    "file": "${packages}/User/Default (OSX).sublime-keymap",
                                     "platform": "OSX"
                                 }
                             },
@@ -71,7 +71,7 @@
                                 "caption": "Key Bindings - User",
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/User/Default (Linux).sublime.keymap",
+                                    "file": "${packages}/User/Default (Linux).sublime-keymap",
                                     "platform": "Linux"
                                 }
                             },
@@ -79,7 +79,7 @@
                                 "caption": "Key Bindings - User",
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/User/Default (Windows).sublime.keymap",
+                                    "file": "${packages}/User/Default (Windows).sublime-keymap",
                                     "platform": "Windows"
                                 }
                             },
