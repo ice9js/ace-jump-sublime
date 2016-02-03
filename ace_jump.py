@@ -9,12 +9,15 @@ next_search = False
 
 mode = 0
 
-def get_active_views(window):
+def get_active_views(window, current_buffer_only):
     """Returns all currently visible views"""
 
     views = []
-    for group in range(window.num_groups()):
-        views.append(window.active_view_in_group(group))
+    if current_buffer_only:
+        views.append(window.active_view())
+    else:
+        for group in range(window.num_groups()):
+            views.append(window.active_view_in_group(group))
     return views
 
 def set_views_setting(views, setting, values):
@@ -75,14 +78,14 @@ def clear_views_sel(views):
 class AceJumpCommand(sublime_plugin.WindowCommand):
     """Base command class for AceJump plugin"""
 
-    def run(self):
+    def run(self, current_buffer_only = False):
         self.char = ""
         self.target = ""
         self.views = []
         self.changed_views = []
         self.breakpoints = []
 
-        self.all_views = get_active_views(self.window)
+        self.all_views = get_active_views(self.window, current_buffer_only)
         self.syntax = get_views_setting(self.all_views, "syntax")
         self.sel = get_views_sel(self.all_views)
 

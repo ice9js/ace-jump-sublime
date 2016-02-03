@@ -109,6 +109,8 @@ You can then override the bindings for any of the following commands:
 - ```ace_jump_select```
 - ```ace_jump_add_cursor```
 
+The commands accept an optional Boolean `current_buffer_only` argument. When present and set to `true`, AceJump only performs on the currently edited buffer.
+
 ### Labels
 
 Go to ```Preferences > Package Settings > AceJump > Settings - User```,
