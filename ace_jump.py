@@ -95,6 +95,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
             "labels",
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         )
+        self.case_sensitivity = settings.get("search_case_sensitivity", True)
 
         self.view_settings = settings.get("view_settings", [])
         self.view_values = get_views_settings(
@@ -164,7 +165,8 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
             view.run_command("add_ace_jump_labels", {
                 "regex": regex,
                 "labels": self.labels,
-                "highlight": self.highlight
+                "highlight": self.highlight,
+                "case_sensitive": self.case_sensitivity
             })
             self.breakpoints.append(last_index)
             self.changed_views.append(view)
@@ -312,16 +314,16 @@ class AceJumpAfterCommand(sublime_plugin.WindowCommand):
 class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
     """Command for adding labels to the views"""
 
-    def run(self, edit, regex, labels, highlight):
+    def run(self, edit, regex, labels, highlight, case_sensitive):
         global hints
 
-        characters = self.find(regex, len(labels))
+        characters = self.find(regex, len(labels), case_sensitive)
         self.add_labels(edit, characters, labels)
         self.view.add_regions("ace_jump_hints", characters, highlight)
 
         hints = hints + characters
 
-    def find(self, regex, max_labels):
+    def find(self, regex, max_labels, case_sensitive):
         """Returns a list with all occurences matching the regex"""
 
         global next_search, last_index
@@ -333,7 +335,7 @@ class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
         last_search = visible_region.end()
 
         while (next_search < last_search and last_index < max_labels):
-            word = self.view.find(regex, next_search)
+            word = self.view.find(regex, next_search, 0 if case_sensitive else sublime.IGNORECASE)
 
             if not word:
                 break
