@@ -5,6 +5,9 @@
     // Syntax highlighting scope for the labels
     "labels_scope": "invalid",
 
+    // Toggles case sensitive search in word and character modes.
+    "search_case_sensitivity": true,
+
     // View settings that should be respected when switching the syntax
     // highlighting mode. In case a plugin you use adds a new
     // setting to a view, you probably want to add it to this list.
