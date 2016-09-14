@@ -69,12 +69,6 @@ def get_views_sel(views):
         selections.append(view.sel())
     return selections
 
-def clear_views_sel(views):
-    """Clears the selection in all given views"""
-
-    for view in views:
-        view.sel().clear()
-
 class AceJumpCommand(sublime_plugin.WindowCommand):
     """Base command class for AceJump plugin"""
 
@@ -174,8 +168,6 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
                 break
 
             self.views.remove(view)
-
-        clear_views_sel(self.all_views)
 
         set_views_syntax(self.all_views, list(itertools.repeat(
             "Packages/AceJump/AceJump.tmLanguage",
