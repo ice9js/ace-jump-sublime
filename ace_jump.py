@@ -9,6 +9,8 @@ next_search = False
 
 mode = 0
 
+ace_jump_active = False
+
 def get_active_views(window, current_buffer_only):
     """Returns all currently visible views"""
 
@@ -73,6 +75,9 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
     """Base command class for AceJump plugin"""
 
     def run(self, current_buffer_only = False):
+        global ace_jump_active
+        ace_jump_active = True
+
         self.char = ""
         self.target = ""
         self.views = []
@@ -98,6 +103,10 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         )
 
         self.show_prompt(self.prompt(), self.init_value())
+
+    def is_enabled(self):
+        global ace_jump_active
+        return not ace_jump_active
 
     def show_prompt(self, title, value):
         """Shows a prompt with the given title and value in the window"""
@@ -128,8 +137,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
 
     def submit(self):
         """Handles the behavior after closing the prompt"""
-
-        global next_search, mode
+        global next_search, mode, ace_jump_active
         next_search = False
 
         self.remove_labels()
@@ -138,6 +146,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         self.jump(self.labels.find(self.target))
 
         mode = 0
+        ace_jump_active = False
 
     def add_labels(self, regex):
         """Adds labels to characters matching the regex"""
