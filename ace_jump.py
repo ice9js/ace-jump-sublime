@@ -7,6 +7,11 @@ search_regex = r''
 
 next_search = False
 
+# MODES
+# 0: default (jumps in front of the selection)
+# 1: select
+# 2: add-cursor
+# 3: jump-after
 mode = 0
 
 ace_jump_active = False
@@ -95,6 +100,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         )
         self.case_sensitivity = settings.get("search_case_sensitivity", True)
+        self.jump_behind_last = settings.get("jump_behind_last_characters", False)
 
         self.view_settings = settings.get("view_settings", [])
         self.view_values = get_views_settings(
@@ -203,7 +209,6 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
 
     def jump(self, index):
         """Performs the jump action"""
-
         if self.target == "" or index < 0 or index >= last_index:
             return
 
@@ -267,6 +272,15 @@ class AceJumpCharCommand(AceJumpCommand):
             view.run_command("move", {"by": "characters", "forward": True})
             mode = 0
 
+    def jump(self, index):
+        global mode
+
+        view = self.changed_views[self.view_for_index(index)]
+        if self.jump_behind_last and "\n" in view.substr(hints[index].end()):
+            mode = 3
+
+        return AceJumpCommand.jump(self, index)
+
 class AceJumpLineCommand(AceJumpCommand):
     """Specialized command for line-mode"""
 
@@ -310,7 +324,6 @@ class AceJumpAfterCommand(sublime_plugin.WindowCommand):
         global mode
 
         mode = 0 if mode == 3 else 3
-        print(mode)
 
 class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
     """Command for adding labels to the views"""
@@ -370,6 +383,7 @@ class PerformAceJumpCommand(sublime_plugin.TextCommand):
     """Command performing the jump"""
 
     def run(self, edit, target):
+        global mode
         if mode == 0 or mode == 3:
             self.view.sel().clear()
 

@@ -8,6 +8,10 @@
     // Toggles case sensitive search in word and character modes.
     "search_case_sensitivity": true,
 
+    // If turned on, character mode will jump after a character 
+    // it it's the last character on a line.
+    "jump_behind_last_characters": false,
+
     // View settings that should be respected when switching the syntax
     // highlighting mode. In case a plugin you use adds a new
     // setting to a view, you probably want to add it to this list.
