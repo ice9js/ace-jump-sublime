@@ -98,6 +98,8 @@ In case there are more places to jump to than labels available, labels will be b
 
 ## Customization
 
+In order to access AceJump settings, go to ```Preferences > Package Settings > AceJump > Settings - User```.
+
 ### Key bindings
 
 Go to ```Preferences > Package Settings > AceJump > Key Bindings - User```.
@@ -113,9 +115,16 @@ The commands accept an optional Boolean `current_buffer_only` argument. When pre
 
 ### Labels
 
-Go to ```Preferences > Package Settings > AceJump > Settings - User```,
-and override the key ```labels```.
+You can override the ```labels``` setting to provide your own set of labels to be used by AceJump.
 
 ### Highlighting
 
-You can also set the syntsx scope that's used for highlighting by going to ```Preferences > Package Settings > AceJump > Settings - User```, and overriding ```labels_scope```.
+You can also set the syntsx scope that's used for highlighting by overriding ```labels_scope```. The default scope is ```invalid```.
+
+### Case sensitivity
+
+Ace jump is case sensitive by default. Case sensitivity can be toggled on and off by altering the ```search_case_sensitivity``` setting.
+
+### Jumping behind the last character in a line
+
+By setting ```jump_behind_last_characters``` to ```true```, AceJump will jump behind a character if it's the last character on a line, without the need to trigger jump after mode. This only works in character mode and is switched off by default.
