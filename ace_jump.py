@@ -149,7 +149,9 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         self.remove_labels()
         set_views_sel(self.all_views, self.sel)
         set_views_syntax(self.all_views, self.syntax)
-        self.jump(self.labels.find(self.target))
+
+        if self.valid_target(self.target):
+            self.jump(self.labels.find(self.target))
 
         mode = 0
         ace_jump_active = False
@@ -209,8 +211,6 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
 
     def jump(self, index):
         """Performs the jump action"""
-        if self.target == "" or index < 0 or index >= last_index:
-            return
 
         region = hints[index].begin()
         view = self.changed_views[self.view_for_index(index)]
@@ -233,6 +233,13 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         for breakpoint in self.breakpoints:
             if index < breakpoint:
                 return self.breakpoints.index(breakpoint)
+
+    def valid_target(self, target):
+        """Check if jump target is valid"""
+
+        index = self.labels.find(target)
+
+        return target != "" and index >= 0 and index < last_index;
 
 class AceJumpWordCommand(AceJumpCommand):
     """Specialized command for word-mode"""
