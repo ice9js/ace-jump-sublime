@@ -12,7 +12,7 @@
         "command": "ace_jump_line"
     },
     {
-        "keys": ["super+shift+."],
+        "keys": ["super+shift+,"],
         "command": "ace_jump_within_line"
     },
     {
