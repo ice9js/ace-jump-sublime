@@ -12,6 +12,10 @@
         "command": "ace_jump_line"
     },
     {
+        "keys": ["ctrl+shift+,"],
+        "command": "ace_jump_within_line"
+    },
+    {
         "keys": ["alt+;"],
         "command": "ace_jump_select"
     },
