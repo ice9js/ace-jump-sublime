@@ -155,6 +155,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
 
         mode = 0
         ace_jump_active = False
+        self.window.run_command("save")
 
     def add_labels(self, regex):
         """Adds labels to characters matching the regex"""
