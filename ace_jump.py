@@ -156,6 +156,8 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
 
         mode = 0
         ace_jump_active = False
+
+        """ Saves changed views after jump is complete"""
         if self.save_files_after_jump:
           for view in self.changed_views:
             view.run_command("save")
