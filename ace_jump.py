@@ -101,6 +101,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         )
         self.case_sensitivity = settings.get("search_case_sensitivity", True)
         self.jump_behind_last = settings.get("jump_behind_last_characters", False)
+        self.save_files_after_jump = settings.get("save_files_after_jump", False)
 
         self.view_settings = settings.get("view_settings", [])
         self.view_values = get_views_settings(
@@ -155,6 +156,11 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
 
         mode = 0
         ace_jump_active = False
+
+        """Saves changed views after jump is complete"""
+        if self.save_files_after_jump:
+          for view in self.changed_views:
+            view.run_command("save")
 
     def add_labels(self, regex):
         """Adds labels to characters matching the regex"""

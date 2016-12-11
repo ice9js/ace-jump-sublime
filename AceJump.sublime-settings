@@ -8,6 +8,11 @@
     // Toggles case sensitive search in word and character modes.
     "search_case_sensitivity": true,
 
+    // Saves all the files aceJump tried to parse.
+    // This setting will reset any linter warnings you might see during jump
+    // By saving all effected files
+    "save_files_after_jump": false,
+
     // If turned on, character mode will jump after a character 
     // it it's the last character on a line.
     "jump_behind_last_characters": false,
