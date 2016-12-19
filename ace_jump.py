@@ -160,7 +160,8 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         """Saves changed views after jump is complete"""
         if self.save_files_after_jump:
           for view in self.changed_views:
-            view.run_command("save")
+            if not view.is_read_only() and not view.is_dirty():
+              view.run_command("save")
 
     def add_labels(self, regex):
         """Adds labels to characters matching the regex"""
