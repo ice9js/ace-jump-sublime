@@ -62,6 +62,13 @@ Labels all non-empty lines and lets you jump to one of them.
 
 ![Line mode](https://cloud.githubusercontent.com/assets/8056203/10858872/9207c596-7f58-11e5-9353-2d57783ca2cc.gif)
 
+### Within Line mode
+
+Labels all words within the line where current cursor locate and lets you jump to one of them.
+
+- ```Ctrl/Super + Shift + ,```
+- ```<label>```
+
 ### Select mode
 
 After triggering select mode, the next jump will select everything inbetween the current cursor position and the selected label.
@@ -108,8 +115,10 @@ You can then override the bindings for any of the following commands:
 - ```ace_jump_word```
 - ```ace_jump_char```
 - ```ace_jump_line```
+- ```ace_jump_within_line```
 - ```ace_jump_select```
 - ```ace_jump_add_cursor```
+- ```ace_jump_after```
 
 The commands accept an optional Boolean `current_buffer_only` argument. When present and set to `true`, AceJump only performs on the currently edited buffer.
 
