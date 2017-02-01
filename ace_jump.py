@@ -179,10 +179,10 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
         self.region_type = self.get_region_type()
         self.changed_views = []
         self.breakpoints = []
-        changed_files = []
+        changed_buffers = []
 
         for view in self.views[:]:
-            if view.file_name() in changed_files:
+            if view.buffer_id() in changed_buffers:
                 break
 
             view.run_command("add_ace_jump_labels", {
@@ -194,7 +194,7 @@ class AceJumpCommand(sublime_plugin.WindowCommand):
             })
             self.breakpoints.append(last_index)
             self.changed_views.append(view)
-            changed_files.append(view.file_name())
+            changed_buffers.append(view.buffer_id())
 
             if next_search:
                 break
