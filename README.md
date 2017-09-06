@@ -79,6 +79,9 @@ When select mode is triggered, the next jump is limited to the current file.
 
 ![Select mode](https://cloud.githubusercontent.com/assets/8056203/10858874/921207a4-7f58-11e5-936a-6e56ec80d486.gif)
 
+***Note:*** To apply *Select mode* you must first start one of the *jump modes*.  
+That is, first start, for example, a *Word mode* (by default *ctrl+shift+;*), **then** start the *Select mode* (default: *alt+;*), **only now** enter the *head character* and choose the corresponding label.
+
 ### Multiple cursors mode
 
 After triggering multiple cursors mode, the next jump will add a new cursor to the view instead of moving the existing one.
@@ -88,6 +91,9 @@ Again, when this mode is triggered, only jumps in the same file are available.
 
 ![Multiple cursors mode](https://cloud.githubusercontent.com/assets/8056203/10858873/9207ee86-7f58-11e5-9251-e74bd64dbfed.gif)
 
+***Note:*** To apply *Multiple cursors mode* you must first start one of the *jump modes*.  
+That is, first start, for example, a *Word mode* (by default *ctrl+shift+;*), **then** start the *Multiple cursors mode* (default: *alt+'*), **only now** enter the *head character* and choose the corresponding label.
+
 ### Jump-after mode
 
 In this mode, the cursor will jump behind the targeted instance. Unfortunetely,
@@ -96,6 +102,9 @@ this mode cannot be paired with select or multiple cursors mode yet.
 - ```Alt+.``` (```Ctrl+.``` for OS X)
 
 ![Jump-after mode](https://cloud.githubusercontent.com/assets/8056203/10858868/91fb4b22-7f58-11e5-8bdf-b489c6bb7ee2.gif)
+
+***Note:*** To apply *Jump-after mode* you must first start one of the *jump modes*.  
+That is, first start, for example, a *Word mode* (by default *ctrl+shift+;*), **then** start the *Jump-after mode* (default: *alt+.*), **only now** enter the *head character* and choose the corresponding label.
 
 ### Batching
 
