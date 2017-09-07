@@ -79,9 +79,6 @@ When select mode is triggered, the next jump is limited to the current file.
 
 ![Select mode](https://cloud.githubusercontent.com/assets/8056203/10858874/921207a4-7f58-11e5-936a-6e56ec80d486.gif)
 
-***Note:*** To apply *Select mode* you must first start one of the *jump modes*.  
-That is, first start, for example, a *Word mode* (by default *ctrl+shift+;*), **then** start the *Select mode* (default: *alt+;*), **only now** enter the *head character* and choose the corresponding label.
-
 ### Multiple cursors mode
 
 After triggering multiple cursors mode, the next jump will add a new cursor to the view instead of moving the existing one.
@@ -91,9 +88,6 @@ Again, when this mode is triggered, only jumps in the same file are available.
 
 ![Multiple cursors mode](https://cloud.githubusercontent.com/assets/8056203/10858873/9207ee86-7f58-11e5-9251-e74bd64dbfed.gif)
 
-***Note:*** To apply *Multiple cursors mode* you must first start one of the *jump modes*.  
-That is, first start, for example, a *Word mode* (by default *ctrl+shift+;*), **then** start the *Multiple cursors mode* (default: *alt+'*), **only now** enter the *head character* and choose the corresponding label.
-
 ### Jump-after mode
 
 In this mode, the cursor will jump behind the targeted instance. Unfortunetely,
@@ -102,9 +96,6 @@ this mode cannot be paired with select or multiple cursors mode yet.
 - ```Alt+.``` (```Ctrl+.``` for OS X)
 
 ![Jump-after mode](https://cloud.githubusercontent.com/assets/8056203/10858868/91fb4b22-7f58-11e5-8bdf-b489c6bb7ee2.gif)
-
-***Note:*** To apply *Jump-after mode* you must first start one of the *jump modes*.  
-That is, first start, for example, a *Word mode* (by default *ctrl+shift+;*), **then** start the *Jump-after mode* (default: *alt+.*), **only now** enter the *head character* and choose the corresponding label.
 
 ### Batching
 
@@ -146,3 +137,13 @@ Ace jump is case sensitive by default. Case sensitivity can be toggled on and of
 ### Jumping behind the last character in a line
 
 By setting ```jump_behind_last_characters``` to ```true```, AceJump will jump behind a character if it's the last character on a line, without the need to trigger jump after mode. This only works in character mode and is switched off by default.
+
+### Known issues
+
+It has been reported that the _Select mode_, _Multi cursors mode_ and _Jump after_ mode might not work using the specified keybinding.  
+As a workaround for that follow these steps:
+
+- Start a regular search, e.g. word search (default keybinding: Ctrl+Shift+;).
+- **Before** entering any character, activate the advanced mode (e.g. for _Select mode_ use Alt+;).
+- Now enter the character to lookup.
+- Use the label to go to the corresponding location.
