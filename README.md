@@ -137,3 +137,13 @@ Ace jump is case sensitive by default. Case sensitivity can be toggled on and of
 ### Jumping behind the last character in a line
 
 By setting ```jump_behind_last_characters``` to ```true```, AceJump will jump behind a character if it's the last character on a line, without the need to trigger jump after mode. This only works in character mode and is switched off by default.
+
+### Known issues
+
+It has been reported that the _Select mode_, _Multi cursors mode_ and _Jump after_ mode might not work using the specified keybinding.  
+As a workaround for that follow these steps:
+
+- Start a regular search, e.g. word search (default keybinding: Ctrl+Shift+;).
+- **Before** entering any character, activate the advanced mode (e.g. for _Select mode_ use Alt+;).
+- Now enter the character to lookup.
+- Use the label to go to the corresponding location.
