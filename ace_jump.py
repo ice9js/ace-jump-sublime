@@ -399,7 +399,7 @@ class AddAceJumpLabelsCommand(sublime_plugin.TextCommand):
         while (next_search < last_search and last_index < max_labels):
             word = self.view.find(regex, next_search, 0 if case_sensitive else sublime.IGNORECASE)
 
-            if not word or word.end() >= last_search:
+            if not word or word.end() > last_search:
                 break
 
             last_index += 1
